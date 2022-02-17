@@ -182,3 +182,21 @@ export let mTranspose = m => [ m[0],m[4],m[ 8],m[12],
                          m[2],m[6],m[10],m[14],
                          m[3],m[7],m[11],m[15] ];
 
+
+export let mBounding = (object, scale = 1) => {
+   let child = object.getMatrix();
+   let sx = scale*child[0], sy = scale*child[5], sz = scale*child[10];
+   let x = child[12], y = child[13], z = child[14];
+   let A = [x - sx*0.5, y - sy*0.5, z + sz*0.5],
+       B = [x + sx*0.5, y - sy*0.5, z + sz*0.5],
+       C = [x - sx*0.5, y - sy*0.5, z - sz*0.5],
+       D = [x - sx*0.5, y + sy*0.5, z + sz*0.5];
+
+   return [A, B, C, D];
+}
+
+export let mCollision = (point, box) => {
+   return (point[0] >= box[0][0] && point[0] <= box[1][0]) &&
+     (point[1] >= box[0][1] && point[1] <= box[3][1]) &&
+     (point[2] <= box[0][2] && point[2] >= box[2][2]);
+}
